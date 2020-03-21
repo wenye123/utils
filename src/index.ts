@@ -49,3 +49,19 @@ export function lottery<T extends Record<string, any>>(gifts: T[], key: string =
   }
   return null;
 }
+
+/** 格式化csv字段内容 */
+export function formatCsvField(val: any, sep = ","): string {
+  const sReg = new RegExp(sep, "g");
+  const qReg = new RegExp('"', "g");
+  const nReg = new RegExp(/\n|\r/, "g");
+  if (val === undefined || val === null) return "";
+  if (typeof val !== "string") {
+    const str = val.toString();
+    val = str === "[object Object]" ? JSON.stringify(val) : str;
+  }
+  if (val.search(sReg) >= 0 || val.search(qReg) >= 0 || val.search(nReg) >= 0) {
+    return `"${val.replace(qReg, `""`).replace(nReg, "")}"`;
+  }
+  return val;
+}

@@ -49,4 +49,48 @@ describe("utils", function() {
     assert.strictEqual(obj[1], 0);
     assert.isTrue(Math.abs(obj[2] - obj[3]) < 500);
   });
+
+  describe("formatCsvField", function() {
+    it("undefined", function() {
+      const str = utils.formatCsvField(undefined);
+      assert.strictEqual(str, "");
+    });
+    it("null", function() {
+      const str = utils.formatCsvField(null);
+      assert.strictEqual(str, "");
+    });
+    it("普通字符串", function() {
+      const str = utils.formatCsvField("wenye");
+      assert.strictEqual(str, "wenye");
+    });
+    it("普通数字", function() {
+      const str = utils.formatCsvField(11);
+      assert.strictEqual(str, "11");
+    });
+    it("布尔值", function() {
+      const str = utils.formatCsvField(true);
+      assert.strictEqual(str, "true");
+    });
+    it("对象", function() {
+      const str = utils.formatCsvField({ name: "wenye" });
+      assert.strictEqual(str, `"{""name"":""wenye""}"`);
+    });
+    it("数组", function() {
+      const str = utils.formatCsvField([1, "wenye"]);
+      assert.strictEqual(str, `"1,wenye"`);
+    });
+    it("带有分隔符", function() {
+      const str = utils.formatCsvField("wen,ye");
+      assert.strictEqual(str, `"wen,ye"`);
+    });
+    it("带有换行符", function() {
+      const str = utils.formatCsvField("wen\n\rye");
+      assert.strictEqual(str, `"wenye"`);
+    });
+    it("带有双引号", function() {
+      const str = utils.formatCsvField(`wen"ye`);
+      assert.strictEqual(str, `"wen""ye"`);
+    });
+  });
 });
+
